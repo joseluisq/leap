@@ -12,11 +12,12 @@ abstract class Controller
     /** @param TwigEnvironment View */
     private TwigEnvironment $view;
 
-    public function __construct()
+    // TODO: provide a configuration object instead
+    public function __construct(string $view_dir, string $cache_dir)
     {
-        $loader = new TwigFilesystemLoader(__DIR__ . '/../views');
+        $loader = new TwigFilesystemLoader($view_dir);
         $this->view = new TwigEnvironment($loader, [
-            'cache' => __DIR__ . '/../cache',
+            'cache' => $cache_dir,
         ]);
     }
 

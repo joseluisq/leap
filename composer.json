@@ -14,10 +14,10 @@
     ],
     "require": {
         "php": ">=8.0",
-        "joseluisq/ruta": "dev-master",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "joseluisq/ruta": "dev-master"
     },
-    "prefer-stable": true,
+    "minimum-stability": "dev",
     "require-dev": {
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-parallel": "^1.0",
