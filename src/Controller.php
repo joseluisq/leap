@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Leap;
 
-use \Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
-use \Twig\Environment as TwigEnvironment;
+use Twig\Environment as TwigEnvironment;
+use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
 abstract class Controller
 {
@@ -15,7 +15,7 @@ abstract class Controller
     // TODO: provide a configuration object instead
     public function __construct(string $view_dir, string $cache_dir)
     {
-        $loader = new TwigFilesystemLoader($view_dir);
+        $loader     = new TwigFilesystemLoader($view_dir);
         $this->view = new TwigEnvironment($loader, [
             'cache' => $cache_dir,
         ]);
