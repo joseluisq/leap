@@ -7,22 +7,28 @@ namespace Leap;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
-abstract class Controller
+class Controller
 {
-    /** @param TwigEnvironment View */
-    private TwigEnvironment $view;
+    /** @param array Contains route data passed */
+    public array $route_data = [];
 
-    // TODO: provide a configuration object instead
-    public function __construct(string $view_dir, string $cache_dir)
+    /** @param ?TwigEnvironment View */
+    private ?TwigEnvironment $view = null;
+
+    public function initilize()
     {
-        $loader     = new TwigFilesystemLoader($view_dir);
+        // TODO: proper error handling
+        $loader     = new TwigFilesystemLoader($this->route_data['views']['views_dir']);
         $this->view = new TwigEnvironment($loader, [
-            'cache' => $cache_dir,
+            'cache' => $this->route_data['views']['cache_dir'],
         ]);
     }
 
     public function render(string $view_file, array $data = []): string
     {
+        if ($this->view === null) {
+            $this->initilize();
+        }
         return $this->view->render($view_file, $data);
     }
 }
