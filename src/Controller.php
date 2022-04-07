@@ -7,6 +7,7 @@ namespace Leap;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
+/** `Leap` base controller class to be extended by other controllers. */
 class Controller
 {
     /** @param array Contains route data passed */
@@ -29,6 +30,7 @@ class Controller
         if ($this->view === null) {
             $this->initilize();
         }
+
         return $this->view->render($view_file, $data);
     }
 }

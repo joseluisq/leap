@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace Leap;
 
+/** An HTTP Microframework for PHP */
 final class Leap
 {
-    private array $config;
-
-    public function __construct(array $config)
+    /**
+     * @param array<string> $data Application configuration data.
+     */
+    public function __construct(private readonly array $config)
     {
-        $this->config = $config;
-        return $this;
     }
 
-    public function boot(callable $routes)
+    /** Boot the current application with its routes. */
+    public function boot(callable $callback)
     {
-        $routes($this->config);
+        $callback(new Route($this->config));
     }
 }
