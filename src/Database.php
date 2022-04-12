@@ -15,11 +15,12 @@ final class Database
     public static function conn(array $config): Capsule
     {
         if (self::$capsule == null) {
-            self::$capsule = new Capsule;
+            self::$capsule = new Capsule();
             self::$capsule->addConnection($config);
             self::$capsule->setAsGlobal();
             self::$capsule->bootEloquent();
         }
+
         return self::$capsule;
     }
 }

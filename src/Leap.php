@@ -8,7 +8,7 @@ namespace Leap;
 final class Leap
 {
     /**
-     * @param array<string> $data Application configuration data.
+     * @param array<string> $data application configuration data
      */
     public function __construct(private readonly array $config)
     {
@@ -17,6 +17,12 @@ final class Leap
     /** Boot the current application with its routes. */
     public function boot(callable $callback)
     {
-        $callback(new Route($this->config));
+        // TODO: Proper error handling
+        $file   = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1)[0]['file'];
+        $config = [
+            ...$this->config,
+            'app_dir' => dirname($file),
+        ];
+        $callback(new Route($config));
     }
 }
