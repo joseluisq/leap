@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Leap;
 
+use Monolog\Handler\ErrorLogHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonologLogger;
 
@@ -27,11 +28,17 @@ final class Logger
                 'EMERGENCY' => MonologLogger::EMERGENCY,
                 default     => MonologLogger::ERROR,
             };
-            $logfile = $config['path'];
-            $logfile = is_absolute_path($logfile)
-                ? $logfile : str_replace('//', '', "$app_dir/$logfile");
+
             self::$logger = new MonologLogger($config['name']);
-            self::$logger->pushHandler(new StreamHandler($logfile, $level));
+
+            if ($config['output'] === 'file') {
+                $logfile = $config['path'];
+                $logfile = is_absolute_path($logfile)
+                    ? $logfile : str_replace('//', '', "$app_dir/$logfile");
+                self::$logger->pushHandler(new StreamHandler($logfile, $level));
+            } else {
+                self::$logger->pushHandler(new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $level));
+            }
         }
 
         return self::$logger;
