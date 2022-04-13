@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Leap;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Monolog\Logger as MonologLogger;
 use Twig\Environment as TwigEnvironment;
 use Twig\Loader\FilesystemLoader as TwigFilesystemLoader;
 
@@ -88,6 +89,13 @@ class Controller
         ];
 
         return Database::conn($config);
+    }
+
+    /** It returns a single logger instance. */
+    public function log(): MonologLogger
+    {
+        // TODO: Proper error handling
+        return Logger::init($this->route_data['app_dir'], $this->route_data['logger']);
     }
 
     public function render(string $view_file, array $data = []): string

@@ -16,7 +16,8 @@
         "php": ">=8.0",
         "twig/twig": "^3.0",
         "joseluisq/ruta": "dev-master",
-        "illuminate/database": "^9"
+        "illuminate/database": "^9",
+        "monolog/monolog": "^2.5"
     },
     "minimum-stability": "dev",
     "require-dev": {
