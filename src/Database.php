@@ -12,7 +12,7 @@ final class Database
     private static ?Capsule $capsule = null;
 
     /** Get an application database instance. */
-    public static function conn(array $config): Capsule
+    public static function init(array $config): Capsule
     {
         if (self::$capsule == null) {
             self::$capsule = new Capsule();

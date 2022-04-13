@@ -55,6 +55,9 @@ class Controller
     /** @param ?TwigEnvironment View */
     private ?TwigEnvironment $_view = null;
 
+    /** @param ?Capsule Database reference */
+    private ?Capsule $_db = null;
+
     public function initilize()
     {
         // TODO: Proper error handling
@@ -70,25 +73,39 @@ class Controller
         $this->_view = new TwigEnvironment($loader, [
             'cache' => $cache_dir,
         ]);
+
+        $this->log()->debug("Views directory configured at \"$view_dir\"");
+        $this->log()->debug("Cache directory configured at \"$cache_dir\"");
+
+        $this->db();
     }
 
     /** It returns a single database manager instance. */
     public function db(): Capsule
     {
-        // TODO: Proper error handling
-        $app_dir     = $this->route_data['app_dir'];
-        $driver      = $this->route_data['database']['driver'];
-        $database    = $this->route_data['database']['database'];
-        if ($driver === 'sqlite') {
-            $database = is_absolute_path($database)
-                ? $database : str_replace('//', '', "$app_dir/$database");
-        }
-        $config = [
-            ...$this->route_data['database'],
-            'database' => $database,
-        ];
+        if ($this->_db === null) {
+            // TODO: Proper error handling
+            $app_dir     = $this->route_data['app_dir'];
+            $driver      = $this->route_data['database']['driver'];
+            $database    = $this->route_data['database']['database'];
 
-        return Database::conn($config);
+            $this->log()->debug("Using database \"$driver\" driver");
+
+            if ($driver === 'sqlite') {
+                $database = is_absolute_path($database)
+                    ? $database : str_replace('//', '', "$app_dir/$database");
+            }
+
+            $config = [
+                ...$this->route_data['database'],
+                'database' => $database,
+            ];
+
+            $this->_db = Database::init($config);
+            $this->log()->debug('Database connection initialized');
+        }
+
+        return $this->_db;
     }
 
     /** It returns a single logger instance. */
