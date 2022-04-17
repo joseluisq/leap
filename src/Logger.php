@@ -13,10 +13,10 @@ final class Logger
 {
     private static ?MonologLogger $logger = null;
 
-    /** Get an application logger instance. */
+    /** Initialize an application logger and returns a single instance. */
     public static function init(string $app_dir, array $config): MonologLogger
     {
-        if (self::$logger == null) {
+        if (static::$logger == null) {
             $level       = match ($config['level']) {
                 'DEBUG'     => MonologLogger::DEBUG,
                 'INFO'      => MonologLogger::INFO,
@@ -29,18 +29,18 @@ final class Logger
                 default     => MonologLogger::ERROR,
             };
 
-            self::$logger = new MonologLogger($config['name']);
+            static::$logger = new MonologLogger($config['name']);
 
             if ($config['output'] === 'file') {
                 $logfile = $config['path'];
                 $logfile = is_absolute_path($logfile)
                     ? $logfile : str_replace('//', '', "$app_dir/$logfile");
-                self::$logger->pushHandler(new StreamHandler($logfile, $level));
+                static::$logger->pushHandler(new StreamHandler($logfile, $level));
             } else {
-                self::$logger->pushHandler(new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $level));
+                static::$logger->pushHandler(new ErrorLogHandler(ErrorLogHandler::OPERATING_SYSTEM, $level));
             }
         }
 
-        return self::$logger;
+        return static::$logger;
     }
 }

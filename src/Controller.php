@@ -80,7 +80,7 @@ class Controller
         $this->db();
     }
 
-    /** It returns a single database manager instance. */
+    /** It returns a single `Illuminate` database manager instance. */
     public function db(): Capsule
     {
         if ($this->_db === null) {
@@ -115,6 +115,7 @@ class Controller
         return Logger::init($this->route_data['app_dir'], $this->route_data['logger']);
     }
 
+    /** Render a view with an specific data. */
     public function render(string $view_file, array $data = []): string
     {
         if ($this->_view === null) {

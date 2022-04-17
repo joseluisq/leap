@@ -11,16 +11,16 @@ final class Database
 {
     private static ?Capsule $capsule = null;
 
-    /** Get an application database instance. */
+    /** Initialize the application database and returns a single instance. */
     public static function init(array $config): Capsule
     {
-        if (self::$capsule == null) {
-            self::$capsule = new Capsule();
-            self::$capsule->addConnection($config);
-            self::$capsule->setAsGlobal();
-            self::$capsule->bootEloquent();
+        if (static::$capsule == null) {
+            static::$capsule = new Capsule();
+            static::$capsule->addConnection($config);
+            static::$capsule->setAsGlobal();
+            static::$capsule->bootEloquent();
         }
 
-        return self::$capsule;
+        return static::$capsule;
     }
 }
