@@ -145,4 +145,14 @@ final class Route
     {
         \Ruta\Ruta::not_found($class_method_or_func, $this->data);
     }
+
+    /**
+     * Middleware that handles any valid HTTP request **before** to the routing delegation.
+     *
+     * @param callable|array<string> $class_method_or_func Class method string array or callable
+     */
+    public function before(callable|array $class_method_or_func): void
+    {
+        \Ruta\Ruta::before($class_method_or_func, $this->data);
+    }
 }
