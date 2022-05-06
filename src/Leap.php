@@ -17,12 +17,14 @@ final class Leap
     /** Boot the current application with its routes. */
     public function boot(callable $callback)
     {
-        // TODO: Proper error handling
-        $file   = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1)[0]['file'];
-        $config = [
-            ...$this->config,
-            'app_dir' => dirname($file),
-        ];
-        $callback(new Route($config));
+        if (array_key_exists('REQUEST_URI', $_SERVER) && array_key_exists('REQUEST_METHOD', $_SERVER)) {
+            // TODO: Proper error handling
+            $file   = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1)[0]['file'];
+            $config = [
+                ...$this->config,
+                'app_dir' => dirname($file),
+            ];
+            $callback(new Route($config));
+        }
     }
 }
